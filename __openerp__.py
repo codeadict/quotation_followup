@@ -14,8 +14,9 @@
     'website': 'http://www.gydsystems.com',
     'depends': ['sale', 'mail'],
     'data': [
-        'security/quotation_followup_security.xml',
-        'security/ir.model.access.csv',
+        #'security/quotation_followup_security.xml',
+        #'security/ir.model.access.csv',
+        'quotation_followup_data.xml',
         'quotation_followup_view.xml',
     ],
     'installable': True,

@@ -1,7 +1,113 @@
+<?xml version="1.0"?>
 <openerp>
     <data>
 
+        <!-- FOLLOW UP CONFG LINES -->
+        <record id="view_quotation_followup_followup_line_tree" model="ir.ui.view">
+            <field name="name">quotation_followup.followup.line.tree</field>
+            <field name="model">quotation_followup.followup.line</field>
+            <field name="arch" type="xml">
+                <tree string="Quotation FollowUp Configuration">
+                    <field name="name"/>
+                    <field name="delay"/>
+                </tree>
+            </field>
+        </record>
 
+        <record id="view_quotation_followup_followup_line_form" model="ir.ui.view">
+            <field name="name">quotation_followup.followup.line.form</field>
+            <field name="model">quotation_followup.followup.line</field>
+            <field name="arch" type="xml">
+                <form string="Quotation FollowUp Configuration" version="7.0">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <div class="oe_inline">
+                        Send mail after
+                        <field name="delay" class="oe_inline"/>
+                        days of created the quote.
+                    </div>
+
+                    <group string="E-mal template">
+                        <field name="email_template_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- FOLLOW UP -->
+        <record id="view_quotation_followup_followup_form" model="ir.ui.view">
+            <field name="name">quotation_followup.followup.form</field>
+            <field name="model">quotation_followup.followup</field>
+            <field name="arch" type="xml">
+                <form string="Quotation Follow-up" version="7.0">
+                    <h1>
+                        <field name="company_id" widget="selection" class="oe_inline"/>
+                    </h1>
+                    <p class="oe_grey">
+                        To remind customers of responding to quotations, you can
+                        define different emails to send to customer depending on how many days
+                        passed from day you created the quote.
+                    </p>
+                    <field name="followup_line"/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_quotation_followup_followup_tree" model="ir.ui.view">
+            <field name="name">quotation_followup.followup.tree</field>
+            <field name="model">quotation_followup.followup</field>
+            <field name="arch" type="xml">
+                <tree string="Quotation Follow-up">
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_quotation_followup_filter" model="ir.ui.view">
+            <field name="name">quotation.followup.select</field>
+            <field name="model">quotation_followup.followup</field>
+            <field name="arch" type="xml">
+                <search string="Search Quotation Follow-up">
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- INHERITED VIEWS -->
+        <record model="ir.ui.view" id="sale_view_inherit_quote_followup">
+            <field name="name">sale.order.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="fiscal_position" position="after">
+                    <field name="send_follow_mails" />
+                </field>
+            </field>
+        </record>
+
+        <!-- ACTIONS -->
+        <record id="action_quotation_followup_definition_form" model="ir.actions.act_window">
+            <field name="name">Quotation Follow-ups</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">quotation_followup.followup</field>
+            <field name="search_view_id" ref="view_quotation_followup_filter"/>
+            <field name="view_type">form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to define follow-ups and their related emails.
+                </p>
+                <p>
+                    Specify the emails to be sent and delay in days
+                    to send specific messages to the customer.
+                </p>
+            </field>
+        </record>
+
+        <!-- MENUS -->
+        <menuitem action="action_quotation_followup_definition_form" id="quotation_followup_menu"
+                  parent="base.menu_base_config" name="Quotations Followup"/>
 
     </data>
 </openerp>

@@ -3,6 +3,7 @@
 # Developer: Dairon Medina Caro <info@gydsystems.com>
 from openerp.osv import fields, osv
 from lxml import etree
+from openerp.osv.fields import _column
 
 from openerp.tools.translate import _
 
@@ -20,7 +21,7 @@ class followup(osv.osv):
         'name': fields.related('company_id', 'name', string="Name"),
     }
     _defaults = {
-        'company_id': lambda s, cr, uid, c: s.pool.get('res.company').company_default_get(cr, uid,
+        'company_id': lambda s, cr, uid, c: s.pool.get('res.company')._company_default_get(cr, uid,
                                                                                           'quotation_followup.followup',
                                                                                           context=c),
     }
@@ -38,12 +39,14 @@ class followup_line(osv.osv):
         """
         try:
             return self.pool.get('ir.model.data').get_object_reference(cr, uid, 'quotation_followup',
-                                                                       'email_template_quotation_followup')[1]
+                                                                       'email_template_quotation_followup_default')[1]
         except ValueError:
             return False
 
+    _name = 'quotation_followup.followup.line'
+    _description = 'Follow-up Configuration'
     _columns = {
-        'name': fields.char('Follow-Up Action', size=64, required=True),
+        'name': fields.char('Name', size=64, required=True, help="Ex: First reminder."),
         'sequence': fields.integer('Sequence', help="Gives the order when displaying list of follow-up lines."),
         'delay': fields.integer('Due Days',
                                 help="The number of days after the quotation date to wait before sending "
@@ -58,3 +61,26 @@ class followup_line(osv.osv):
     _defaults = {
         'email_template_id': _get_default_template,
     }
+
+
+class sale_order(osv.osv):
+    """
+    Override Sale Order
+    """
+    _inherit = 'sale.order'
+
+    _columns = {
+        'send_follow_mails': fields.boolean('Send Follow-up e-Mails')
+    }
+
+    _default = {
+        'send_follow_mails': True,
+    }
+
+    def maybe_send_followup(self, cr, uid, ids, context=None):
+        """
+        Method executed by ir.cron
+        to see if have to send the mail
+        """
+        followup_obj = self.pool.get('quotation_followup.followup')
+        pass
