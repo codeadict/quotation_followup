@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.cron" id="cronjob_quotation_mail_scheduler"
+                forcecreate="True">
+            <field name='name'>Send Quotation Reminder by Mail</field>
+            <field eval="True" name="active" />
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False" />
+            <field eval="'sale.order'" name="model" />
+            <field eval="'maybe_send_followup'" name="function" />
+            <field eval="'(False,)'" name="args" />
+        </record>
+    </data>
+</openerp>

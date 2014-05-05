@@ -4,6 +4,7 @@
 from openerp.osv import fields, osv
 from lxml import etree
 from openerp.osv.fields import _column
+from datetime import datetime, timedelta, date
 
 from openerp.tools.translate import _
 
@@ -22,10 +23,11 @@ class followup(osv.osv):
     }
     _defaults = {
         'company_id': lambda s, cr, uid, c: s.pool.get('res.company')._company_default_get(cr, uid,
-                                                                                          'quotation_followup.followup',
-                                                                                          context=c),
+                                                                                           'quotation_followup.followup',
+                                                                                           context=c),
     }
     _sql_constraints = [('company_uniq', 'unique(company_id)', 'Only one follow-up per company is allowed')]
+followup()
 
 
 class followup_line(osv.osv):
@@ -61,6 +63,7 @@ class followup_line(osv.osv):
     _defaults = {
         'email_template_id': _get_default_template,
     }
+followup_line()
 
 
 class sale_order(osv.osv):
@@ -70,17 +73,41 @@ class sale_order(osv.osv):
     _inherit = 'sale.order'
 
     _columns = {
-        'send_follow_mails': fields.boolean('Send Follow-up e-Mails')
+        'send_follow_mails': fields.boolean('Send Follow-up e-Mails'),
+        'client_unsuscribed': fields.boolean('Client have stop getting reminders')
     }
 
     _default = {
         'send_follow_mails': True,
+        'client_unsuscribed': False,
     }
 
-    def maybe_send_followup(self, cr, uid, ids, context=None):
+    def maybe_send_followup(self, cr, uid, automatic=False, use_new_cursor=False, context=None):
         """
         Method executed by ir.cron
         to see if have to send the mail
         """
+        if context is None:
+            context = {}
+        current_datetime = datetime.now()
+        quotes_to_send_ids = self.search(cr, uid,
+                                         [('send_follow_mails', '=', True), ('client_unsuscribed', '=', False)],
+                                         context=context)
+
         followup_obj = self.pool.get('quotation_followup.followup')
-        pass
+
+        for quote in self.browse(cr, uid, quotes_to_send_ids, context=context):
+
+            quote_dt = quote.date_order
+
+            followups_ids = followup_obj.search(cr, uid,
+                                                [('company_id', '=', quote.company_id.id)],
+                                                limit=1)
+            for followups in followup_obj.browse(cr, uid, followups_ids, context=context):
+                for followup_line in followups.followup_line:
+                    delta = datetime.strptime(quote_dt, "%Y-%m-%d %H:%M:%S") + timedelta(
+                            days=followup_line.delay)
+                    if delta.date() == current_datetime.date():
+                        self.pool.get('email.template').send_mail(cr, uid, followup_line.email_template_id, quote.id,
+                                                                  force_send=True, context=context)
+

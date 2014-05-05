@@ -1,18 +1,3 @@
-<?xml version="1.0"?>
-<openerp>
-    <data>
-         <!--Mail template level 0-->
-        <record id="email_template_quotation_followup_default" model="email.template">
-            <field name="name">Quotation Reminder E-Mail</field>
-            <field name="email_from">${object.user_id.email or ''}</field>
-            <field name="subject">${user.company_id.name} Quotation Reminder</field>
-            <field name="email_to">${object.partner_id.email}</field>
-            <field name="lang">${object.partner_id.lang}</field>
-            <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="auto_delete" eval="True"/>
-            <field name="report_template" ref="sale.report_sale_order"/>
-            <field name="report_name">Quotation ${object.name}</field>
-            <field name="body_html"><![CDATA[
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,7 +32,7 @@ body {
 }
 
 /* -------------------------------------
-		ELEMENTS
+		ELEMENTS 
 ------------------------------------- */
 a {
     color: #A80404;
@@ -114,8 +99,8 @@ a.ms {
     width: 100%;
 }
 
-/* -------------------------------------
-		HEADER
+/* ------------------------------------- 
+		HEADER 
 ------------------------------------- */
 table.head-wrap {
     width: 100%;
@@ -131,14 +116,14 @@ table.head-wrap {
 }
 
 /* -------------------------------------
-		BODY
+		BODY 
 ------------------------------------- */
 table.body-wrap {
     width: 100%;
 }
 
 /* -------------------------------------
-		FOOTER
+		FOOTER 
 ------------------------------------- */
 table.footer-wrap {
     width: 100%;
@@ -157,7 +142,7 @@ table.footer-wrap {
 }
 
 /* -------------------------------------
-		TYPOGRAPHY
+		TYPOGRAPHY 
 ------------------------------------- */
 h1, h2, h3, h4, h5, h6 {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -229,8 +214,8 @@ ul li {
     list-style-position: inside;
 }
 
-/* -------------------------------------
-		SIDEBAR
+/* ------------------------------------- 
+		SIDEBAR 
 ------------------------------------- */
 ul.sidebar {
     background: #ebebeb;
@@ -267,7 +252,7 @@ ul.sidebar li a h1, ul.sidebar li a h2, ul.sidebar li a h3, ul.sidebar li a h4, 
 
 /* ---------------------------------------------------
 		RESPONSIVENESS
-		Nuke it from orbit. It's the only way to be sure.
+		Nuke it from orbit. It's the only way to be sure. 
 ------------------------------------------------------ */
 
 /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
@@ -356,7 +341,7 @@ ul.sidebar li a h1, ul.sidebar li a h2, ul.sidebar li a h3, ul.sidebar li a h4, 
                 <table bgcolor="#B20305">
                     <tbody>
                     <tr>
-                        <td><img src="http://www.brash-scales.com/images/logo.png"></td>
+                        <td><img src="logo.png"></td>
                         <td align="right"><h6 class="collapse">Quotation Reminder</h6></td>
                     </tr>
                     </tbody>
@@ -384,7 +369,7 @@ ul.sidebar li a h1, ul.sidebar li a h2, ul.sidebar li a h3, ul.sidebar li a h4, 
                     <tr>
                         <td>
 
-                            <h3>Dear, ${object.partner_id.name}</h3>
+                            <h3>Dear, Rhys Park</h3>
 
                             <p>You recently requested a quotation from our sales team and our records show you have not
                                 yet taken up our offer. Just in case you can't find the estimate we have attached
@@ -427,7 +412,7 @@ ul.sidebar li a h1, ul.sidebar li a h2, ul.sidebar li a h3, ul.sidebar li a h4, 
                                                     <p>Phone: <strong>+44(0)141 638 2284
 
                                                     </strong><br>
-                                                        Email: <strong><a href="mailto:contact@brash-scales.com">contact@brash-scales.com</a></strong>
+                                                        Email: <strong><a href="emailto:hseldon@trantor.com">hseldon@trantor.com</a></strong>
                                                     </p>
 
                                                 </td>
@@ -472,7 +457,7 @@ ul.sidebar li a h1, ul.sidebar li a h2, ul.sidebar li a h3, ul.sidebar li a h4, 
                     <tr>
                         <td align="center">
                             <p>
-                                <a href="http://brashscales.co.uk/openerp/unsubbequote.php">
+                                <a href="#">
                                     <unsubscribe>Stop Getting this Mail</unsubscribe>
                                 </a>
                             </p>
@@ -491,8 +476,3 @@ ul.sidebar li a h1, ul.sidebar li a h2, ul.sidebar li a h3, ul.sidebar li a h4, 
 <!-- /FOOTER -->
 </body>
 </html>
-            ]]></field>
-        </record>
-
-    </data>
-</openerp>

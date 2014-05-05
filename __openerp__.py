@@ -17,6 +17,7 @@
         #'security/quotation_followup_security.xml',
         #'security/ir.model.access.csv',
         'quotation_followup_data.xml',
+        'schelduler.xml',
         'quotation_followup_view.xml',
     ],
     'installable': True,
