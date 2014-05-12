@@ -97,6 +97,7 @@ class sale_order(osv.osv):
         followup_obj = self.pool.get('quotation_followup.followup')
 
         for quote in self.browse(cr, uid, quotes_to_send_ids, context=context):
+            print "ID TO SEND: " + str(quote.id)
 
             quote_dt = quote.date_order
 
@@ -105,9 +106,13 @@ class sale_order(osv.osv):
                                                 limit=1)
             for followups in followup_obj.browse(cr, uid, followups_ids, context=context):
                 for followup_line in followups.followup_line:
-                    delta = datetime.strptime(quote_dt, "%Y-%m-%d %H:%M:%S") + timedelta(
+                    delta = datetime.strptime(quote_dt, "%Y-%m-%d") + timedelta(
                             days=followup_line.delay)
+                    print "THE DELTA IS: " + str(delta)
                     if delta.date() == current_datetime.date():
+                        print "SEND TODAY! YEAH"
                         self.pool.get('email.template').send_mail(cr, uid, followup_line.email_template_id, quote.id,
                                                                   force_send=True, context=context)
+                    else:
+                        print "NOT SEND TODAY"
 
