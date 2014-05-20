@@ -25,7 +25,8 @@ body {
 
 .success{
     border: 1px solid;
-    margin: 10px 0px;
+    margin: 0 auto;
+    width: 60%;
     padding: 15px 10px 15px 50px;
     background-repeat: no-repeat;
     background-position: 10px center;

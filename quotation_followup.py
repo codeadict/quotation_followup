@@ -82,8 +82,8 @@ class sale_order(osv.osv):
     }
 
     _default = {
-        'send_follow_mails': True,
-        'client_unsuscribed': False,
+        'send_follow_mails': lambda *a: True,
+        'client_unsuscribed': lambda *a: False,
     }
 
     def send_followup(self, cr, uid, ids, context=None):

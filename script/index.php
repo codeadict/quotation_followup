@@ -24,7 +24,7 @@ if (!empty($_GET['qid'])){
 <?php
 
 $open = new OpenERP();
-$qt = $open->res_partner('name', 'state', 'note', 'client_unsuscribed')->get($_POST['quoteid']);
+$qt = $open->sale_order('name', 'state', 'note', 'client_unsuscribed')->get($_POST['quoteid']);
 if ($qt->client_unsuscribed == false){
 ?>
 <!-- HEADER -->

@@ -519,6 +519,7 @@
                 case 'char':
                 case 'text':
                 case 'selection':
+                case 'boolean':
                 case 'binary':
                     $type = "string";                    
                     break;
