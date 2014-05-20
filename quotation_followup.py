@@ -86,20 +86,18 @@ class sale_order(osv.osv):
         'client_unsuscribed': False,
     }
 
-    def send_followup(self, cr, uid, automatic=False, use_new_cursor=False, context=None):
+    def send_followup(self, cr, uid, ids, context=None):
         """
         send email using the button
         """
         if context is None:
             context = {}
-
-        followup_obj = self.pool.get('quotation_followup.followup')
         quote = self.browse(self, cr, uid, context=context)
 
         template = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'quotation_followup',
                                                                        'email_template_quotation_followup_default')[1]
 
-        if self.pool.get('email.template').send_mail(cr, uid, template, quote.id,
+        if self.pool.get('email.template').send_mail(cr, uid, template, ids,
                                                      force_send=True, context=context):
             raise osv.except_osv(_('Success!'), _('Email sent correctly to Customer.'))
         else:

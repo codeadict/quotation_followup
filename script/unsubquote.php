@@ -93,7 +93,7 @@ if (isset($_POST['reason']) && $_POST['reason'] != '') {
 
     /* This function unsuscribes a user from quotation and fill some aditional data */
     //Change to fit your configuration
-    $cnt->unsubscribe('admin', 'Park_1976', 'brash', 'http://146.185.144.193:8069/xmlrpc/', $arrData);
+    $cnt->unsubscribe('admin', 'Park_1976', 'brash', 'http://82.196.3.147:8069/xmlrpc/', $arrData);
 } else {
     echo 'Please fill all the data.';
 }
