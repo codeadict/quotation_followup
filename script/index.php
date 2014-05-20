@@ -6,6 +6,8 @@
  * Time: 7:35 PM
  */
 
+include("openerplib.php");
+
 if (!empty($_GET['qid'])){
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -19,6 +21,12 @@ if (!empty($_GET['qid'])){
 </head>
 <body bgcolor="#FFFFFF">
 
+<?php
+
+$open = new OpenERP();
+$qt = $open->res_partner('name', 'state', 'note', 'client_unsuscribed')->get($_POST['quoteid']);
+if ($qt->client_unsuscribed == false){
+?>
 <!-- HEADER -->
 <table class="head-wrap" bgcolor="#B20305">
     <tbody>
@@ -43,6 +51,7 @@ if (!empty($_GET['qid'])){
     </tbody>
 </table>
 <!-- /HEADER -->
+
 
 <!-- BODY -->
 <table class="body-wrap">
@@ -147,6 +156,14 @@ if (!empty($_GET['qid'])){
     </tbody>
 </table>
 <!-- /BODY -->
+
+<?php
+} else {
+
+?>
+<br><br><br><br>
+<div class="success">You are currently unsuscribed from this quotation and not getting E-Mails.</div>
+<?php } ?>
 </body>
 <script src="jquery-1.9.1.js" type="text/javascript"></script>
 </html>
