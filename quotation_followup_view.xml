@@ -82,7 +82,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <button name='print_quotation' position='before'>
-                      <button name="maybe_send_followup" string="Send Follow-Up Now" type="object" class="oe_highlight"
+                      <button name="send_followup" string="Send Follow-Up Now" type="object" class="oe_highlight"
                             attrs="{'invisible': [('state','not in',('draft','sent'))]}" groups="base.group_user"/>
                 </button>
                 <field name="fiscal_position" position="after">

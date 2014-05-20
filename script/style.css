@@ -125,12 +125,9 @@ label {
     height: 45px;
     padding: 10px 15px;
     font-size: 17px;
-    line-height: 1.72222;
     border-radius: 6px;
 }
 select.input-lg {
-    height: 45px;
-    line-height: 45px;
     width: 95%;
 }
 textarea.input-lg {

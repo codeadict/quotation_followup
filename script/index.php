@@ -5,6 +5,8 @@
  * Date: 5/13/14
  * Time: 7:35 PM
  */
+
+if (!empty($_GET['qid'])){
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -16,6 +18,7 @@
 <link rel='stylesheet' href='style.css' >
 </head>
 <body bgcolor="#FFFFFF">
+
 <!-- HEADER -->
 <table class="head-wrap" bgcolor="#B20305">
     <tbody>
@@ -27,7 +30,7 @@
                 <table bgcolor="#B20305">
                     <tbody>
                     <tr>
-                        <td><img src="logo.png"></td>
+                        <td><img src="http://www.brash-scales.com/images/logo.png"></td>
                         <td align="right"><h6 class="collapse">Unsuscribe from Quotation Reminder</h6></td>
                     </tr>
                     </tbody>
@@ -40,7 +43,6 @@
     </tbody>
 </table>
 <!-- /HEADER -->
-
 
 <!-- BODY -->
 <table class="body-wrap">
@@ -55,7 +57,7 @@
                     <tr>
                         <td>
 
-                            <h3>Stop getting mails about quotation #096455</h3>
+                            <h3>Stop getting mails about quotation <?php echo $_GET['qname']; ?></h3>
 
                             <p>
                             <form method="post" action="unsubquote.php">
@@ -67,9 +69,6 @@
                                         <option value="toexpensive">Too expensive</option>
                                         <option value="purchasedother">Purchased somewhere else</option>
                                     </select><br />
-                                </div>
-                                <div class="row">
-                                    <label for="comments"> Comments :</label> <textarea name="comments" id="comments" class="form-control input-lg"></textarea>
                                 </div>
                                 <p style="text-align: right;">
                                     <input type="submit" class="btn" value="Unsubscribe Now"/>
@@ -146,3 +145,4 @@
 </body>
 <script src="jquery-1.9.1.js" type="text/javascript"></script>
 </html>
+<?php } ?>

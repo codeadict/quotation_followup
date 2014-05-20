@@ -27,6 +27,8 @@ class followup(osv.osv):
                                                                                            context=c),
     }
     _sql_constraints = [('company_uniq', 'unique(company_id)', 'Only one follow-up per company is allowed')]
+
+
 followup()
 
 
@@ -63,6 +65,8 @@ class followup_line(osv.osv):
     _defaults = {
         'email_template_id': _get_default_template,
     }
+
+
 followup_line()
 
 
@@ -81,6 +85,27 @@ class sale_order(osv.osv):
         'send_follow_mails': True,
         'client_unsuscribed': False,
     }
+
+    def send_followup(self, cr, uid, automatic=False, use_new_cursor=False, context=None):
+        """
+        send email using the button
+        """
+        if context is None:
+            context = {}
+
+        followup_obj = self.pool.get('quotation_followup.followup')
+        quote = self.browse(self, cr, uid, context=context)
+
+        template = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'quotation_followup',
+                                                                       'email_template_quotation_followup_default')[1]
+
+        if self.pool.get('email.template').send_mail(cr, uid, template, quote.id,
+                                                     force_send=True, context=context):
+            raise osv.except_osv(_('Success!'), _('Email sent correctly to Customer.'))
+        else:
+            raise osv.except_osv(_('Error!'),
+                                 _('Sorry.The was some error sending the message. Contact the Administrator.'))
+
 
     def maybe_send_followup(self, cr, uid, automatic=False, use_new_cursor=False, context=None):
         """
@@ -107,7 +132,7 @@ class sale_order(osv.osv):
             for followups in followup_obj.browse(cr, uid, followups_ids, context=context):
                 for followup_line in followups.followup_line:
                     delta = datetime.strptime(quote_dt, "%Y-%m-%d") + timedelta(
-                            days=followup_line.delay)
+                        days=followup_line.delay)
                     print "THE DELTA IS: " + str(delta)
                     if delta.date() == current_datetime.date():
                         print "SEND TODAY! YEAH"
