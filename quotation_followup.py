@@ -97,7 +97,7 @@ class sale_order(osv.osv):
         template = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'quotation_followup',
                                                                        'email_template_quotation_followup_default')[1]
 
-        if self.pool.get('email.template').send_mail(cr, uid, template, ids,
+        if self.pool.get('email.template').send_mail(cr, uid, template, ids[0],
                                                      force_send=True, context=context):
             raise osv.except_osv(_('Success!'), _('Email sent correctly to Customer.'))
         else:
