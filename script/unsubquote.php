@@ -49,10 +49,18 @@ class OpenERPConn
             else {
                 $client2 = new xmlrpc_client($server_url . 'object');
 
-                $values = array(
-                    "reason" => new xmlrpcval($post['reason'], "string"),
-                    "comments" => new xmlrpcval($post['comments'], "string")
-                );
+                if ($post['reason'] == 'toexpensive'){
+                    $comm = 'Client said is too expensive.<br>';
+                } else {
+                    $comm = 'Client purchased from other company.<br>';
+                }
+                $comment = $comm . $post['comments'];
+                
+                $values = array();
+                $values['note'] = new xmlrpcval($comment, "string");
+                //TODO: Put if to cancel or not the quote
+                $values['state'] = new xmlrpcval('cancel', "string");
+
 
                 $msg = new xmlrpcmsg('execute');
                 $msg->addParam(new xmlrpcval($db, "string"));
@@ -64,6 +72,9 @@ class OpenERPConn
                 $msg->addParam(new xmlrpcval($values, "struct"));
 
                 $res2 = &$client2->send($msg);
+                if (!$res2->faultCode()){
+                    echo 'You are now unsuscribed from this quotation. Thanks for your interest.';
+                }
 
             }
         } else {
@@ -82,7 +93,7 @@ if (isset($_POST['reason']) && $_POST['reason'] != '') {
 
     /* This function unsuscribes a user from quotation and fill some aditional data */
     //Change to fit your configuration
-    $cnt->unsubscribe('admin', 'admin', 'ecuaerp', 'http://localhost:8069/xmlrpc/', $arrData);
+    $cnt->unsubscribe('admin', 'Park_1976', 'brash', 'http://146.185.144.193:8069/xmlrpc/', $arrData);
 } else {
     echo 'Please fill all the data.';
 }

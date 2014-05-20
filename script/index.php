@@ -70,6 +70,11 @@ if (!empty($_GET['qid'])){
                                         <option value="purchasedother">Purchased somewhere else</option>
                                     </select><br />
                                 </div>
+                                <div class="row">
+                                    <label for="comments">Comments:</label>
+                                    <textarea id="comments" name="comments" class="form-control input-lg"></textarea>
+                                    <br />
+                                </div>
                                 <p style="text-align: right;">
                                     <input type="submit" class="btn" value="Unsubscribe Now"/>
                                 </p>
