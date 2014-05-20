@@ -74,6 +74,8 @@ class OpenERPConn
                 $res2 = &$client2->send($msg);
                 if (!$res2->faultCode()){
                     echo 'You are now unsuscribed from this quotation. Thanks for your interest.';
+                } else {
+                    echo 'Error: '.$res2->faultString();
                 }
 
             }
