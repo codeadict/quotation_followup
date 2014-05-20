@@ -46,8 +46,9 @@ class OpenERPConn
             if (empty($id)) {
                 echo "Connection error = ";
             } #If not empty userid proceed to unsuscribe action
-            else {
-                $client2 = new xmlrpc_client($server_url . 'object');
+            else
+            {
+                $client2 = new xmlrpc_client($server_url . 'common');
 
                 if ($post['reason'] == 'toexpensive'){
                     $comm = 'Client said is too expensive.<br>';
@@ -71,9 +72,10 @@ class OpenERPConn
                 $msg->addParam(new xmlrpcval($post['quoteid'], "array"));
                 $msg->addParam(new xmlrpcval($values, "struct"));
 
-                $res2 = &$client2->send($msg);
+                $res2 = $client2->send($msg);
+
                 if (!$res2->faultCode()){
-                    echo 'You are now unsuscribed from this quotation. Thanks for your interest.';
+                    echo 'You are now unsuscribed from quotation '.$res2->value()->scalarval().' . Thanks for your interest.';
                 } else {
                     echo 'Error: '.$res2->faultString();
                 }
@@ -88,14 +90,22 @@ class OpenERPConn
 
 //HANDLE THE FORM SUBMIT
 if (isset($_POST['reason']) && $_POST['reason'] != '') {
-    $arrData = array();
-    $arrData = array_merge($arrData, (array)$_POST);
-
-    $cnt = new OpenERPConn();
-
     /* This function unsuscribes a user from quotation and fill some aditional data */
     //Change to fit your configuration
-    $cnt->unsubscribe('admin', 'Park_1976', 'brash', 'http://82.196.3.147:8069/xmlrpc/', $arrData);
+
+    if ($_POST['reason'] == 'toexpensive'){
+        $comm = 'Client said is too expensive.';
+    } else {
+        $comm = 'Client purchased from other company.';
+    }
+    $comment = $comm . $_POST['comments'];
+
+    $open = new OpenERP();
+
+    $qt = $open->res_partner('name', 'state', 'note')->get($_POST['quoteid']);
+    $qt->state = 'cancel';
+    $qt->note = $comment;
+    $qt->save();
 } else {
     echo 'Please fill all the data.';
 }
